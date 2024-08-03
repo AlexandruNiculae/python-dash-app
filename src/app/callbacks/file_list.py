@@ -1,7 +1,7 @@
 from typing import Any
 from dash import Dash, Input, Output
 
-from app.layouts.image_grid import ImageGridLayout
+from app.layouts.file_list import FileList
 
 
 def register_callbacks(app: Dash)-> None:
@@ -11,4 +11,4 @@ def register_callbacks(app: Dash)-> None:
         prevent_initial_call=True
     )
     def generate_grid_layout(_: Any) -> Any:
-        return ImageGridLayout().render()
+        return FileList(dirpath=r"").render()

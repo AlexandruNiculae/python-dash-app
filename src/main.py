@@ -1,4 +1,3 @@
-import os
 from app import app
 from app.callbacks import register_all_callbacks
 
