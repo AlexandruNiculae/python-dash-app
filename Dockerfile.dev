@@ -1,0 +1,19 @@
+FROM python:3.10
+
+RUN mkdir /app
+WORKDIR /app
+
+RUN mkdir src
+RUN mkdir test
+COPY src src
+COPY test test
+
+COPY .pylintrc /app
+COPY mypy.ini /app
+WORKDIR /app
+
+RUN pip install poetry
+RUN poetry config virtualenvs.create false
+
+COPY poetry.lock pyproject.toml /app/
+RUN poetry install -n --no-root

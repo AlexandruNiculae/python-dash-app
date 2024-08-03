@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Simple Python Dash App"
 authors = ["Alexandru Niculae <alexandru.niculae13@yahoo.com>"]
 readme = "README.md"
-packages = [{include = "python_dash_app"}, ".", "src"]
+packages = [{include = "python_dash_app"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
