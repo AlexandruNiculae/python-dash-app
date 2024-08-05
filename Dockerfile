@@ -14,4 +14,4 @@ COPY poetry.lock pyproject.toml /app/
 RUN poetry install -n --no-root --without dev
 
 EXPOSE 8050
-ENTRYPOINT ["python3", "./src/main.py"]
+ENTRYPOINT ["python3", "/app/src/main.py"]
