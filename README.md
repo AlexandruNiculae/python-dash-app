@@ -1,7 +1,7 @@
 ## Environment variables:
 
 - `HOST` - the host address to run the application on (default 127.0.0.1)
-- `PORT` - the port address to run the application on (default 8050)
+- `PORT` - the port address to run the application on (default 8050) (optional)
 - `DASH_APP_OWNER` - application owner name to display on the main page
 
 ## Docker images:
