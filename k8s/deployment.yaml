@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashapp-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashapp
+  template:
+    metadata:
+      labels:
+        app: dashapp
+    spec:
+      containers:
+      - name: dashapp
+        image: pythondashapp:v0
+        # minikube docker-env --unset | Invoke-Expression
+        # OR
+        # eval $(minikube docker-env)
+        # image must be tagged
+        ports:
+        - containerPort: 8050
+        env:
+        - name: HOST
+          value: "0.0.0.0"
+        # - name: DASH_APP_OWNER
+        #   value: ""
