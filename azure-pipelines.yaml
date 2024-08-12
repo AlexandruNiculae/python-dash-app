@@ -1,0 +1,149 @@
+trigger:
+  branches:
+    include:
+    - main
+
+resources:
+  repositories:
+  - repository: self
+
+variables:
+- name: dockerRegistryServiceConnection
+  value: '<YOU-DOCKER-REGISTRY-SERVICE-CONN>'
+- name: imageRepositoryApp
+  value: 'dashapp'
+- name: containerRegistry
+  value: '<REGISTRY-NAME>.azurecr.io'
+- name: dockerfilePathApp
+  value: '$(Build.SourcesDirectory)/Dockerfile'
+- name: devdockerfilePathApp
+  value: '$(Build.SourcesDirectory)/Dockerfile.dev'
+- name: tag
+  value: 'latest'
+- name: dev-tag
+  value: 'latest-dev'
+- name: vmImageName
+  value: 'ubuntu-latest'
+- name: azureSubscription
+  value: '<AZURE-SUBSCRIPTION-ID>'
+- name: webAppName
+  value: '<AZURE-WEB-APP-NAME>'
+- name: resourceGroupName
+  value: '<RESOURCE-GROUP-NAME>'
+- name: appHost
+  value: '0.0.0.0'
+- name: appOwner
+  value: '<YOUR-NAME>'
+- name: DOCKER_USERNAME
+  value: '<DOCKER-USERNAME>'
+- name: DOCKER_PASSWORD
+  value: 'DOCKER-PASSWORD'
+
+
+stages:
+- stage: BuildAndPush
+  displayName: Build and Push Images
+  jobs:
+  - job: BuildAppImage
+    displayName: Build and Push Application Image
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and Push Application Image
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepositoryApp)
+        dockerfile: $(dockerfilePathApp)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: $(tag)
+
+  - job: BuildDevImage
+    displayName: Build and Push Dev Docker Image
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and Push Dev Docker Image
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepositoryApp)
+        dockerfile: $(devdockerfilePathApp)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: $(dev-tag)
+
+
+- stage: RunMaintenanceCommands
+  displayName: Run Application Maintenance Commands
+  dependsOn:
+  - BuildAndPush
+  jobs:
+  - job: PyLint
+    displayName: Run Pylint
+    pool:
+      vmImage: $(vmImageName)
+    dependsOn:
+    - BuildDevImage
+    steps:
+    - task: CmdLine@2
+      displayName: 'Run Pylint'
+      timeoutInMinutes: 5
+      inputs:
+        script: |
+          echo "Running Pylint"
+          docker run --rm $(containerRegistry)/$(imageRepositoryApp):$(dev-tag) pylint src
+
+  - job: MyPy
+    displayName: Run MyPy
+    pool:
+      vmImage: $(vmImageName)
+    dependsOn:
+    - BuildDevImage
+    steps:
+    - task: CmdLine@2
+      displayName: 'Run MyPy'
+      timeoutInMinutes: 5
+      inputs:
+        script: |
+          echo "Running MyPy"
+          docker run --rm $(containerRegistry)/$(imageRepositoryApp):$(dev-tag) mypy src
+
+  - job: PyTest
+    displayName: Run Pytest
+    pool:
+      vmImage: $(vmImageName)
+    dependsOn:
+    - BuildDevImage
+    steps:
+    - task: CmdLine@2
+      displayName: 'Run Pytest'
+      timeoutInMinutes: 5
+      inputs:
+        script: |
+          echo "Running MyPy"
+          docker run --rm $(containerRegistry)/$(imageRepositoryApp):$(dev-tag) -e HOST=$(appHost) -e DASH_APP_OWNER=$(appOwner) pytest -s test
+
+- stage: Deploy
+  displayName: Deploy into Azure
+  dependsOn:
+  - PyLint
+  - MyPy
+  - PyTest
+  jobs:
+  - deployment: DeployToAzure
+    displayName: Deploy into Azure Web App
+    environment:
+      name: 'test/staging/prod'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebAppContainer@1
+            displayName: 'Deploy to Azure Web App'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appName: $(webAppName)
+              resourceGroupName: $(resourceGroupName)
+              imageName: $(containerRegistry)/$(imageRepositoryApp):$(tag)
+              containerCommand: 'python3 ./src/main.py'
+
