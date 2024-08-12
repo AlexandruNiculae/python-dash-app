@@ -15,9 +15,9 @@ spec:
       containers:
       - name: dashapp
         image: pythondashapp:v0
-        # minikube docker-env --unset | Invoke-Expression
+        # WINDOWS: minikube docker-env | Invoke-Expression
         # OR
-        # eval $(minikube docker-env)
+        # LINUX: eval $(minikube docker-env)
         # image must be tagged
         ports:
         - containerPort: 8050

@@ -6,6 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
+  # minikube addons enable ingress
   # add `minikube ip` in /etc/hosts
   - host: dashapp.local
     http:
