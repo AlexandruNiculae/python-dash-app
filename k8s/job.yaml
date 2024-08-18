@@ -1,37 +1,22 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: dashapp-deployment
+  name: dashapp-job
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: dashapp
   template:
-    metadata:
-      labels:
-        app: dashapp
     spec:
       containers:
       - name: dashapp
         image: pythondashapp:v0
+        command: ["python3"]  # Override the entrypoint
+        args: ["/app/src/job.py"]
         volumeMounts:
         - name: config-yaml-volume
           mountPath: /app/config/config.yaml
           subPath: config.yaml
         - name: dashapp-data-volume
           mountPath: /app/data
-        # WINDOWS: minikube docker-env | Invoke-Expression
-        # OR
-        # LINUX: eval $(minikube docker-env)
-        # image must be tagged
-        ports:
-        - containerPort: 8050
         env:
-        # - name: HOST
-        #   value: "0.0.0.0"
-        # - name: DASH_APP_OWNER
-        #   value: ""
         - name: DASH_APP_CONFIG
           valueFrom:
             secretKeyRef:
@@ -49,3 +34,4 @@ spec:
       - name: dashapp-data-volume
         persistentVolumeClaim:
           claimName: dashapp-pvc
+      restartPolicy: OnFailure

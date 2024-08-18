@@ -163,3 +163,4 @@ cython_debug/
 
 # App specific:
 config.yaml
+data/

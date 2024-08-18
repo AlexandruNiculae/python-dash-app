@@ -38,7 +38,7 @@ class FileListItem:
                 dmc.Card(
                     children=[
                         dmc.CardSection(
-                            dmc.Text(self.filename),
+                            dmc.Center(dmc.Text(self.filename)),
                         ),
                         dmc.Group(
                             [
@@ -49,19 +49,11 @@ class FileListItem:
                             mt="md",
                             mb="xs",
                         ),
-                        dmc.Button(
-                            "Delete",
-                            color="blue",
-                            fullWidth=True,
-                            mt="md",
-                            radius="md",
-                        ),
                     ],
                     withBorder=True,
                     shadow="sm",
                     radius="md",
-                    w=400,
+                    w=500,
                 )
             ],
-            span=2,
         )

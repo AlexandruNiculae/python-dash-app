@@ -1,7 +1,7 @@
 import os
 import dash_mantine_components as dmc
 
-from app.layouts.file_list_item import FileListItem
+from app.layouts.file_list.file_list_item import FileListItem
 
 # pylint: disable=too-few-public-methods
 
@@ -22,8 +22,14 @@ class FileList:
             ) for filename in os.listdir(self.dirpath)
         ]
 
-        return dmc.Grid(gutter="xs", children=[
-            dmc.GridCol(
-                item.render()
-            ) for item in list_items if item.filetype not in self.ignored_extensions
-        ])
+        return dmc.Grid(children=[
+                dmc.GridCol(
+                    item.render()
+                ) for item in list_items if item.filetype not in self.ignored_extensions
+            ],
+            gutter="xs",
+            justify="space-around",
+            align="stretch",
+            columns=36,
+            grow=True,
+        )

@@ -8,6 +8,11 @@ class NetworkConfig:
     host: str
     port: int
 
+
+@dataclass
+class DataConfig:
+    path: str
+
 class AppConfig:  # pylint: disable=too-few-public-methods
 
     def __init__(self, config_yaml_path: str) -> None:
@@ -15,6 +20,7 @@ class AppConfig:  # pylint: disable=too-few-public-methods
             yaml_data = yaml.safe_load(fp)
 
         self.networking = NetworkConfig(**yaml_data.get("network"))
+        self.data = DataConfig(**yaml_data.get("data"))
 
 
 
