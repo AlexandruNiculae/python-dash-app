@@ -9,7 +9,7 @@ if __name__ == "__main__":
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
 
-    filename = f"{datetime.now().strftime("%Y-%m-%d-%H:%M:%S")}.txt"
+    filename = f"{datetime.now().strftime('%Y-%m-%d-%H:%M:%S')}.txt"
     filepath = os.path.join(dirpath, filename)
     with open(filepath, 'w') as fp:
         fp.write("bap")
