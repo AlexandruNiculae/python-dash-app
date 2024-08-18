@@ -4,14 +4,13 @@ os.environ['REACT_VERSION'] = '18.2.0'
 from dash import Dash, dcc, html
 import dash_mantine_components as dmc
 
-from src.app.layouts.not_implemented import NotImplementedComponent
-from src.config import APP_OWNER
+from app.config import APP_OWNER
 
 
 
 app_temp_body = dmc.Center(
     children=[
-        NotImplementedComponent().render()
+        dmc.Loader(color="indigo", size="md", variant="oval")
     ],
 )
 

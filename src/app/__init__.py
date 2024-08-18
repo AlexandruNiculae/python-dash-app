@@ -1,1 +1,1 @@
-from src.app.app_base import app
+from app.app_base import app

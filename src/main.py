@@ -1,7 +1,7 @@
-from src.config import CONFIG
+from app.config import CONFIG
 
-from src.app.callbacks import register_all_callbacks
-from src.app import app
+from app.callbacks import register_all_callbacks
+from app import app
 
 if __name__ == "__main__":
     register_all_callbacks(app)

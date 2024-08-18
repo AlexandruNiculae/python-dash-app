@@ -1,7 +1,7 @@
 import os
 import dash_mantine_components as dmc
 
-from src.app.layouts.file_list_item import FileListItem
+from app.layouts.file_list_item import FileListItem
 
 # pylint: disable=too-few-public-methods
 
