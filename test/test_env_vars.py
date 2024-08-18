@@ -8,6 +8,6 @@ def test_app_owner_is_set()-> None:
     assert APP_OWNER != "Nobody", "Variable DASH_APP_OWNER is not set"
 
 
-def test_host_is_set()-> None:
-    host = os.environ.get("HOST", "127.0.0.1")
-    assert host != "127.0.0.1", "Variable HOST is not set"
+def test_app_config_is_set()-> None:
+    confpath = os.environ.get("DASH_APP_CONFIG")
+    assert confpath is not None, "Variable DASH_APP_CONFIG is not set"

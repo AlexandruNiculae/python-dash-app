@@ -1,7 +1,7 @@
 from typing import Any
 from dash import Dash, Input, Output
 
-from app.layouts.file_list import FileList
+from src.app.layouts.file_list import FileList
 
 
 def register_callbacks(app: Dash)-> None:

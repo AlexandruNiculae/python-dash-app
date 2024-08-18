@@ -4,8 +4,8 @@ os.environ['REACT_VERSION'] = '18.2.0'
 from dash import Dash, dcc, html
 import dash_mantine_components as dmc
 
-from app.layouts.not_implemented import NotImplementedComponent
-from config import APP_OWNER
+from src.app.layouts.not_implemented import NotImplementedComponent
+from src.config import APP_OWNER
 
 
 
