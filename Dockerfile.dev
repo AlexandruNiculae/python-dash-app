@@ -8,9 +8,10 @@ RUN mkdir test
 COPY src src
 COPY test test
 
+RUN mkdir config
+
 COPY .pylintrc /app
 COPY mypy.ini /app
-WORKDIR /app
 
 RUN pip install poetry
 RUN poetry config virtualenvs.create false

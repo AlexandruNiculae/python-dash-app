@@ -6,10 +6,9 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  # `minikube addons enable ingress`
+  # requires `minikube addons enable ingress`
   # add `minikube ip` in /etc/hosts
-  # `minikube tunnel`
-  # accessible through localhost
+  # might not work for windows x docker desktop users due to the way networking is done between the 2
   - host: dashapp.local
     http:
       paths:
