@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dashapp-cronjob
+spec:
+  # see https://crontab.guru/#5_*_*_*_*
+  schedule: "5 * * * *"  # This example runs the job every day at midnight
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: dashapp
+            image: pythondashapp:v0
+            command: ["python3"]  # Override the entrypoint
+            args: ["/app/src/job.py"]
+            volumeMounts:
+            - name: config-yaml-volume
+              mountPath: /app/config/config.yaml
+              subPath: config.yaml
+            - name: dashapp-data-volume
+              mountPath: /app/data
+            env:
+            - name: DASH_APP_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: dashapp-secret
+                  key: DASH_APP_CONFIG
+            - name: DASH_APP_OWNER
+              valueFrom:
+                secretKeyRef:
+                  name: dashapp-secret
+                  key: DASH_APP_OWNER
+          volumes:
+          - name: config-yaml-volume
+            configMap:
+              name: dashapp-config
+          - name: dashapp-data-volume
+            persistentVolumeClaim:
+              claimName: dashapp-pvc
+          restartPolicy: OnFailure

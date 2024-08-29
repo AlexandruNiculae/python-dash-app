@@ -1,0 +1,8 @@
+apiVersion: dash.app/v1
+kind: DashAppResource
+metadata:
+  name: dashappresource-sample
+  namespace: default  # Use the appropriate namespace
+spec:
+  foo: "Hello"
+  bar: 42
