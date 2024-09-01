@@ -5,6 +5,60 @@ metadata:
 spec:
   template:
     spec:
+      # node selector
+      # nodeSelector:
+        # role: jobrunner
+
+      # direct scheduling
+      # nodeName: node1
+
+      # agnostic scheduling
+      # resources:
+      #   requests:
+      #     memory: "64Mi"
+      #     cpu: "250m"
+      #   limits:
+      #     memory: "128Mi"
+      #     cpu: "500m"
+      
+      # pod tolerations
+      # tolerations:
+      #   - key: "role"
+      #     operator: "Equal"
+      #     value: "jobrunner"
+      #     effect: "NoSchedule"
+
+      # node & pod affinities/antiaffinites
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: disktype
+      #           operator: In
+      #           values:
+      #           - ssd
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #     - weight: 1
+      #       preference:
+      #         matchExpressions:
+      #         - key: zone
+      #           operator: In
+      #           values:
+      #           - us-east-1a
+      #   podAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchLabels:
+      #           app: frontend
+      #       topologyKey: kubernetes.io/hostname
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchLabels:
+      #           app: frontend
+      #       topologyKey: kubernetes.io/hostname
+
       containers:
       - name: dashapp
         image: pythondashapp:v0
