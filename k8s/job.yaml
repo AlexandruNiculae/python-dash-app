@@ -7,7 +7,7 @@ spec:
     spec:
       # node selector
       # nodeSelector:
-        # role: jobrunner
+      #   role: jobrunner
 
       # direct scheduling
       # nodeName: node1
@@ -16,17 +16,17 @@ spec:
       # resources:
       #   requests:
       #     memory: "64Mi"
-      #     cpu: "250m"
+      #     cpu: "250m"  # 25% CPU
       #   limits:
       #     memory: "128Mi"
-      #     cpu: "500m"
+      #     cpu: "500m"  # 50% CPU
       
       # pod tolerations
       # tolerations:
       #   - key: "role"
       #     operator: "Equal"
       #     value: "jobrunner"
-      #     effect: "NoSchedule"
+      #     effect: "NoSchedule" # "NoExecute"
 
       # node & pod affinities/antiaffinites
       # affinity:
